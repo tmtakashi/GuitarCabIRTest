@@ -5,7 +5,7 @@
 Clone this repo with
 
 ```
-git clone --recursive 
+git clone --recursive https://github.com/tmtakashi/GuitarCabIRTest.git
 ```
 
 Create build tree
