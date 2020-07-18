@@ -2,6 +2,12 @@
 
 ## Setup
 
+Clone this repo with
+
+```
+git clone --recursive 
+```
+
 Create build tree
 
 ```
