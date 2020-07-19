@@ -1,6 +1,7 @@
 #pragma once
 
 #include <juce_audio_processors/juce_audio_processors.h>
+#include <juce_dsp/juce_dsp.h>
 
 //==============================================================================
 class AudioPluginAudioProcessor  : public juce::AudioProcessor
@@ -42,6 +43,9 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
 private:
+    // juce::dsp::Convolution::NonUniform requiredHeadSize{256};
+    // juce::dsp::Convolution convolver{requiredHeadSize};
+    juce::dsp::Convolution convolver;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginAudioProcessor)
 };

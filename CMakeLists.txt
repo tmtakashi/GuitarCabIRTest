@@ -48,6 +48,7 @@ juce_add_plugin(GuitarCabIRTest
     # IS_MIDI_EFFECT TRUE/FALSE                 # Is this plugin a MIDI effect?
     # EDITOR_WANTS_KEYBOARD_FOCUS TRUE/FALSE    # Does the editor need keyboard focus?
     # COPY_PLUGIN_AFTER_BUILD TRUE/FALSE        # Should the plugin be installed to a default location after building?
+    MICROPHONE_PERMISSION_ENABLED TRUE
     PLUGIN_MANUFACTURER_CODE Juce               # A four-character manufacturer id with at least one upper-case character
     PLUGIN_CODE Dem0                            # A unique four-character plugin id with at least one upper-case character
     FORMATS AU VST3 Standalone                  # The formats to build. Other valid formats are: AAX Unity VST AU AUv3
@@ -101,4 +102,5 @@ target_compile_definitions(GuitarCabIRTest
 
 target_link_libraries(GuitarCabIRTest PRIVATE
     # AudioPluginData           # If we'd created a binary data target, we'd link to it here
-    juce::juce_audio_utils)
+    juce::juce_audio_utils
+    juce::juce_dsp)
