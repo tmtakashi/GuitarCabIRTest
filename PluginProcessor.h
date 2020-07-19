@@ -43,9 +43,8 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
 private:
-    // juce::dsp::Convolution::NonUniform requiredHeadSize{256};
-    // juce::dsp::Convolution convolver{requiredHeadSize};
-    juce::dsp::Convolution convolver;
+    juce::dsp::Convolution::NonUniform requiredHeadSize{256};
+    juce::dsp::Convolution convolver{requiredHeadSize};
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginAudioProcessor)
 };
