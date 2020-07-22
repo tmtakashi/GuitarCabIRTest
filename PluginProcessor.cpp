@@ -90,7 +90,6 @@ void AudioPluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPer
         (juce::uint32)samplesPerBlock, 
         (juce::uint32)juce::jmax(getTotalNumInputChannels(), getTotalNumOutputChannels())
     });
-    convolver.reset();
     auto irFile = juce::File::getSpecialLocation(juce::File::userDesktopDirectory).getChildFile("ir_2_0m.wav");
     jassert(irFile.existsAsFile());
     convolver.loadImpulseResponse(irFile,
