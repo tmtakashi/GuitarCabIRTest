@@ -2,6 +2,7 @@
 
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <juce_dsp/juce_dsp.h>
+#include <juce_audio_devices/juce_audio_devices.h>
 
 //==============================================================================
 class AudioPluginAudioProcessor  : public juce::AudioProcessor

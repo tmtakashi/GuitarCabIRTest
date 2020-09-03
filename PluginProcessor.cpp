@@ -86,18 +86,27 @@ void AudioPluginAudioProcessor::changeProgramName (int index, const juce::String
 //==============================================================================
 void AudioPluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
+
     convolver.prepare({sampleRate, 
         (juce::uint32)samplesPerBlock, 
         (juce::uint32)juce::jmax(getTotalNumInputChannels(), getTotalNumOutputChannels())
     });
     convolver.reset();
-    auto irFile = juce::File::getSpecialLocation(juce::File::userDesktopDirectory).getChildFile("ir_2_0m.wav");
-    jassert(irFile.existsAsFile());
-    convolver.loadImpulseResponse(irFile,
+    auto irFile_L = juce::File::getSpecialLocation(juce::File::userDesktopDirectory).getChildFile("ir_front_L.wav");
+    auto irFile_R = juce::File::getSpecialLocation(juce::File::userDesktopDirectory).getChildFile("ir_front_R.wav");
+    jassert(irFile_L.existsAsFile());
+    jassert(irFile_R.existsAsFile());
+    convolver.loadImpulseResponse(irFile_L,
                                   juce::dsp::Convolution::Stereo::yes,
                                   juce::dsp::Convolution::Trim::no,
                                   4096,
-                                  juce::dsp::Convolution::Normalise::yes);
+                                  juce::dsp::Convolution::Normalise::no);
+    convolver.loadImpulseResponse(irFile_R,
+                                  juce::dsp::Convolution::Stereo::yes,
+                                  juce::dsp::Convolution::Trim::no,
+                                  4096,
+                                  juce::dsp::Convolution::Normalise::no);
+
 }
 
 void AudioPluginAudioProcessor::releaseResources()
@@ -134,16 +143,26 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     juce::ignoreUnused (midiMessages);
 
     juce::ScopedNoDenormals noDenormals;
-    auto totalNumInputChannels  = getTotalNumInputChannels();
-    auto totalNumOutputChannels = getTotalNumOutputChannels();
+    int totalNumInputChannels  = getTotalNumInputChannels();
+    int totalNumOutputChannels = getTotalNumOutputChannels();
+
+    const int bufferNumChannels = buffer.getNumChannels();
+    const int bufferNumSamples = buffer.getNumSamples();
 
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    juce::dsp::AudioBlock<float> block(buffer);
-    juce::dsp::ProcessContextReplacing<float> context(block);
+    bool isMonoToStereo = getTotalNumInputChannels() == 1 && getTotalNumOutputChannels() == 2;
+    if (isMonoToStereo)
+    buffer.copyFrom(1, 0, buffer,            // dest chan, offset, buff
+                            0, 0, bufferNumSamples); //  src chan, offset, size
+
+    auto block = juce::dsp::AudioBlock<float>(buffer);
+    auto context = juce::dsp::ProcessContextReplacing<float>(block);
     convolver.process(context);
 }
+
+
 
 //==============================================================================
 bool AudioPluginAudioProcessor::hasEditor() const

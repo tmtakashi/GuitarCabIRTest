@@ -8,7 +8,8 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     juce::ignoreUnused (processorRef);
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (400, 300);
+    
+    setSize (600, 400);
 }
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
@@ -23,7 +24,7 @@ void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
 
     g.setColour (juce::Colours::white);
     g.setFont (30.0f);
-    g.drawFittedText ("Hello JUCE!", getLocalBounds(), juce::Justification::centred, 1);
+    g.drawFittedText ("Hello, IR Convolution!", getLocalBounds(), juce::Justification::centred, 1);
 }
 
 void AudioPluginAudioProcessorEditor::resized()
